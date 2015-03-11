@@ -1,13 +1,12 @@
 package net.kemitix.spring.common.logging;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Enumeration;
+import java.util.Properties;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ReflectionUtils;
 
 /**
  * Logs the non-private fields in an object using the supplied {@link Logger}.
@@ -23,39 +22,20 @@ public class PropertyLogger {
      *
      * @param logger the {@link Logger} to log the properties to
      * @param subject the Object whose properties are to be logged
-     * @throws java.lang.Exception
      */
-    public void logProperties(Logger logger, LoggableProperties subject) throws Exception {
-
-        // get all property names
-        final List<String> propertyNames = new ArrayList<>();
-        ReflectionUtils.doWithFields(subject.getClass(), (Field field) -> {
-            propertyNames.add(field.getName());
-        }, (Field field) -> !Modifier.isPrivate(field.getModifiers()));
-
-        // get length of longest name
-        int maxLength = 0;
-        for (String propertyName : propertyNames) {
-            if (propertyName.length() > maxLength) {
-                maxLength = propertyName.length();
-            }
+    public void logProperties(Logger logger, LoggableProperties subject) {
+        Properties properties = subject.getProperties();
+        Enumeration<?> propertyNames = properties.propertyNames();
+        SortedMap<String, String> sorted = new TreeMap<>();
+        while (propertyNames.hasMoreElements()) {
+            String name = (String) propertyNames.nextElement();
+            String value = properties.getProperty(name);
+            sorted.put(name, value);
         }
-
-        // loop over properties and print them
-        String nameFormat = String.format("%%%ds", maxLength);
-        final List<Exception> exceptions = new ArrayList<>();
-        propertyNames.stream().forEach((String propertyName) -> {
-            try {
-                logger.log(Level.INFO, "{0} : {1}", new Object[]{
-                    String.format(nameFormat, propertyName),
-                    ReflectionUtils.findField(subject.getClass(), propertyName).get(subject)
-                });
-            } catch (IllegalArgumentException | IllegalAccessException ex) {
-                exceptions.add(ex);
-            }
+        sorted.entrySet().stream().forEach((entry) -> {
+            logger.log(Level.INFO, "{0} : {1}", new Object[]{
+                entry.getKey(), entry.getValue()
+            });
         });
-        if (exceptions.size() > 0) {
-            throw exceptions.get(0);
-        }
     }
 }
