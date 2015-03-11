@@ -23,8 +23,9 @@ public class PropertyLogger {
      *
      * @param logger the {@link Logger} to log the properties to
      * @param subject the Object whose properties are to be logged
+     * @throws java.lang.Exception
      */
-    public void logProperties(Logger logger, Object subject) {
+    public void logProperties(Logger logger, Object subject) throws Exception {
 
         // get all property names
         final List<String> propertyNames = new ArrayList<>();
@@ -42,15 +43,19 @@ public class PropertyLogger {
 
         // loop over properties and print them
         String nameFormat = String.format("%%%ds", maxLength);
-        propertyNames.stream().forEach((propertyName) -> {
+        final List<Exception> exceptions = new ArrayList<>();
+        propertyNames.stream().forEach((String propertyName) -> {
             try {
                 logger.log(Level.INFO, "{0} : {1}", new Object[]{
                     String.format(nameFormat, propertyName),
                     ReflectionUtils.findField(subject.getClass(), propertyName).get(subject)
                 });
             } catch (IllegalArgumentException | IllegalAccessException ex) {
-                Logger.getLogger(PropertyLogger.class.getName()).log(Level.SEVERE, null, ex);
+                exceptions.add(ex);
             }
         });
+        if (exceptions.size() > 0) {
+            throw exceptions.get(0);
+        }
     }
 }
