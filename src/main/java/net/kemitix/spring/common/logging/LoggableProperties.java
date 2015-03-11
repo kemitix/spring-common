@@ -19,7 +19,7 @@ public abstract class LoggableProperties {
     private PropertyLogger propertyLogger;
 
     @PostConstruct
-    public void logProperties() {
+    public void logProperties() throws Exception {
         propertyLogger.logProperties(getLogger(), this);
     }
 

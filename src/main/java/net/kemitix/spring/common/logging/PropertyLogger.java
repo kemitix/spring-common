@@ -25,7 +25,7 @@ public class PropertyLogger {
      * @param subject the Object whose properties are to be logged
      * @throws java.lang.Exception
      */
-    public void logProperties(Logger logger, Object subject) throws Exception {
+    public void logProperties(Logger logger, LoggableProperties subject) throws Exception {
 
         // get all property names
         final List<String> propertyNames = new ArrayList<>();
