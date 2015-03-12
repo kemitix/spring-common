@@ -148,6 +148,29 @@ public class LogFieldPostProcessorTest {
         verify(logger, times(0)).log(Level.INFO, "{0} : {1}", new Object[]{"packageDefault", PACKAGE_DEFAULT});
     }
 
+    /**
+     * Test for null field values
+     */
+    @Test
+    public void shouldHandleNullFieldValues() {
+        System.out.println("shoud handle null field values");
+        //given
+        LoggerProvider bean = new TestProperties();
+        setField(bean, "onDisplay", null);
+        Logger logger = mock(Logger.class);
+        setField(bean, "logger", logger);
+
+        //when
+        Object result = postProcessor.postProcessAfterInitialization(bean, null);
+
+        //then
+        assertThat(result, is(bean));
+        verify(logger, times(1)).log(Level.INFO, "{0} : {1}", new Object[]{"visible", VISIBLE});
+        verify(logger, times(1)).log(Level.INFO, "{0} : {1}", new Object[]{"on display", "(null)"});
+        verify(logger, times(0)).log(Level.INFO, "{0} : {1}", new Object[]{"secret", SECRET});
+        verify(logger, times(0)).log(Level.INFO, "{0} : {1}", new Object[]{"packageDefault", PACKAGE_DEFAULT});
+    }
+
     @Getter
     public static class TestProperties implements LoggerProvider {
 
