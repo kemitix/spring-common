@@ -122,8 +122,55 @@ public class LogFieldPostProcessorTest {
         verify(logger, times(0)).log(Level.INFO, "{0} : {1}", new Object[]{"packageDefault", PACKAGE_DEFAULT});
     }
 
+    /**
+     * Test of postProcessAfterInitialization method, of class
+     * LogFieldPostProcessor.
+     *
+     * Attempt to process a class that doesn't implement LoggerProvider, bit
+     * still has a @LogField property.
+     */
+    @Test
+    public void shouldIgnoreNonLoggerProviderClass() {
+        System.out.println("should ignore non-LoggerProvider class");
+        //given
+        FooClass bean = new FooClass();
+        Logger logger = mock(Logger.class);
+        setField(bean, "logger", logger);
+
+        //when
+        Object result = postProcessor.postProcessAfterInitialization(bean, null);
+
+        //then
+        assertThat(result, is(bean));
+        verify(logger, times(0)).log(Level.INFO, "{0} : {1}", new Object[]{"visible", VISIBLE});
+        verify(logger, times(0)).log(Level.INFO, "{0} : {1}", new Object[]{"on display", ON_DISPLAY});
+        verify(logger, times(0)).log(Level.INFO, "{0} : {1}", new Object[]{"secret", SECRET});
+        verify(logger, times(0)).log(Level.INFO, "{0} : {1}", new Object[]{"packageDefault", PACKAGE_DEFAULT});
+    }
+
     @Getter
     public static class TestProperties implements LoggerProvider {
+
+        private Logger logger;
+
+        private String secret = SECRET;
+
+        @LogField
+        protected String visible = VISIBLE;
+
+        @LogField(name = "on display")
+        public String onDisplay = ON_DISPLAY;
+
+        String packageDefault = PACKAGE_DEFAULT;
+
+    }
+
+    /**
+     * Identical to TestPropertes - except is doesn't implement the
+     * LoggerProvider interface.
+     */
+    @Getter
+    public static class FooClass {
 
         private Logger logger;
 
