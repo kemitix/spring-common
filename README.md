@@ -10,8 +10,9 @@ This Java library provides some Components for use with Spring Boot applications
 **Class**|&nbsp;
 -----|-----
 `ResourceReader` | For reading a file from a `Resource` into a String
-`Log` | Annotation class to enable injection of an appropriate `Logger`
-`LoggableProperties` | Logs non-private fields to the `Logger`
+`@Log`|Annotation class to enable injection of an appropriate `Logger`
+`LoggerProvider`|Interface to provide a `Logger`
+`@LogField`|Annotation class to indicate fields to be logged
 `JdbcProperties` | Abstract class for holding JDBC `DataSource` properties
 `Queryable` | Funtional interface for a querying by a String to get a `List`
 
@@ -55,7 +56,7 @@ This Java library provides some Components for use with Spring Boot applications
         }
     }
 
-### Log
+### @Log
 
     package foo;
 
@@ -72,12 +73,12 @@ This Java library provides some Components for use with Spring Boot applications
         }
     }
 
-### LoggableProperties
+### LoggerProvider & @LogField
 
     package foo;
 
     import net.kemitix.spring.common.logging.Log;
-    import net.kemitix.spring.common.logging.LoggableProperties;
+    import net.kemitix.spring.common.logging.LoggerProvider;
     import lombok.Setter;
     import lombok.Getter;
 
@@ -85,7 +86,7 @@ This Java library provides some Components for use with Spring Boot applications
     @ConfigurationProperties(prefix = "foo")
     @Setter
     @Getter
-    public FooProperties extends LoggableProperties {
+    public FooProperties implements LoggerProvider {
 
         @Log
         private Logger logger;
@@ -93,9 +94,14 @@ This Java library provides some Components for use with Spring Boot applications
         /**
          * Log host, port and username
          */
-        protected String host;
-        protected int port;
-        protected String username;
+        @LogField(name = "hostname")
+        private String host;
+
+        @LogField
+        private int port;
+
+        @LogField
+        private String username;
 
         /**
          * Not logged as it is private
@@ -120,7 +126,7 @@ This Java library provides some Components for use with Spring Boot applications
         private Logger logger;
     }
 
-Because JdbcProperties subclasses LoggableProperties, it needs to provide an implementation of Logger getLogger(), which we do using Lombok's @Getter and spring-common's @Log annotations.
+Because JdbcProperties implements LoggerProvider, it needs to provide an implementation of Logger getLogger(), which we do using Lombok's @Getter and spring-common's @Log annotations.
 
 Note that the password property, being private in JdbcProperties, is not logged.
 
