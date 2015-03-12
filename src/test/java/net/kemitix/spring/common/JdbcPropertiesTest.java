@@ -48,7 +48,7 @@ public class JdbcPropertiesTest {
         JdbcProperties properties = new JdbcProperties() {
 
             @Override
-            protected Logger getLogger() {
+            public Logger getLogger() {
                 return mock(Logger.class);
             }
         };
