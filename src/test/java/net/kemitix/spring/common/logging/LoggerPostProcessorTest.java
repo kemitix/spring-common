@@ -71,12 +71,12 @@ public class LoggerPostProcessorTest {
     public void testPostProcessBeforeInitialization() {
         System.out.println("postProcessBeforeInitialization");
         //given
-        LoggableProperties bean = new LoggableProperties() {
+        LoggerProvider bean = new LoggerProvider() {
             @Log
             public Logger logger;
 
             @Override
-            protected Logger getLogger() {
+            public Logger getLogger() {
                 return logger;
             }
         };
