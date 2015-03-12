@@ -30,7 +30,8 @@ public class LogFieldPostProcessor implements BeanPostProcessor {
                     if (name.equals("")) {
                         name = field.getName();
                     }
-                    String value = field.get(bean).toString();
+                    Object rawValue = field.get(bean);
+                    String value = rawValue == null ? "(null)" : rawValue.toString();
                     logger.log(Level.INFO, "{0} : {1}", new Object[]{
                         name, value
                     });
