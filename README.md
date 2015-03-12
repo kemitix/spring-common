@@ -7,14 +7,14 @@ Library of common Spring Components and associated classes used in my Spring Boo
 
 This Java library provides some Components for use with Spring Boot applications.
 
-&nbsp;|&nbsp;
--|-
-ResourceReader|For reading a file from a Resource into a String
-@Log|Annotation class to enable injection of an appropriate `Logger`
-LoggerProvider|Interface to provide a `Logger`
-@LogField|Annotation class to indicate fields to be logged
-JdbcProperties|Abstract class for holding JDBC DataSource properties
-Queryable|Funtional interface for a querying by a String to get a List
+**Class**|&nbsp;
+-----|-----
+`ResourceReader` | For reading a file from a `Resource` into a String
+`@Log`|Annotation class to enable injection of an appropriate `Logger`
+`LoggerProvider`|Interface to provide a `Logger`
+`@LogField`|Annotation class to indicate fields to be logged
+`JdbcProperties` | Abstract class for holding JDBC `DataSource` properties
+`Queryable` | Funtional interface for a querying by a String to get a `List`
 
 ## Usage
 
