@@ -20,7 +20,6 @@ public class LogFieldPostProcessor implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof LoggerProvider) {
             Logger logger = ((LoggerProvider) bean).getLogger();
-            logger.log(Level.INFO, "Scanning: {0}", beanName);
             ReflectionUtils.doWithFields(bean.getClass(), (Field field) -> {
                 ReflectionUtils.makeAccessible(field);
                 LogField annotation = field.getAnnotation(LogField.class);
