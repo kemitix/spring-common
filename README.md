@@ -14,6 +14,7 @@ This Java library provides some Components for use with Spring Boot applications
 `LoggerProvider`|Interface to provide a `Logger`
 `@LogField`|Annotation class to indicate fields to be logged
 `JdbcProperties` | Abstract class for holding JDBC `DataSource` properties
+`JdbcDataSource` | `DataSource` wrapper for using a `JdbcProperties` instance
 `Queryable` | Funtional interface for a querying by a String to get a `List`
 
 ## Usage
@@ -128,19 +129,16 @@ This Java library provides some Components for use with Spring Boot applications
 
 Because JdbcProperties implements LoggerProvider, it needs to provide an implementation of Logger getLogger(), which we do using Lombok's @Getter and spring-common's @Log annotations.
 
-Note that the password property, being private in JdbcProperties, is not logged.
+### JdbcDataSource
 
     package foo;
 
     @Component
-    public class FooDataSource extends DriverManagerDataSource {
+    public class FooDataSource extends JdbcDataSource {
 
         @Autowired
         public FooDataSource(FooJdbcProperties properties) {
-            setDriverClassName(properties.getDriver());
-            setUrl(properties.getUrl());
-            setUsername(properties.getUser());
-            setPassword(properties.getPassword());
+            super(properties);
         }
     }
 
