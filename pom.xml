@@ -60,12 +60,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
-            <version>1.2.2.RELEASE</version>
+            <version>1.2.3.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
-            <version>1.2.2.RELEASE</version>
+            <version>1.2.3.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -76,7 +76,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>1.2.2.RELEASE</version>
+            <version>1.2.3.RELEASE</version>
         </dependency>
     </dependencies>
 
