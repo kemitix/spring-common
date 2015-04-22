@@ -2,7 +2,7 @@ package net.kemitix.spring.common;
 
 import java.util.List;
 
-public interface Queryable<T> {
+public interface Queryable<S, T> {
 
-    List<T> query(String query);
+    List<T> query(S query);
 }
