@@ -15,7 +15,7 @@ This Java library provides some Components for use with Spring Boot applications
 `@LogField`|Annotation class to indicate fields to be logged
 `JdbcProperties` | Abstract class for holding JDBC `DataSource` properties
 `JdbcDataSource` | `DataSource` wrapper for using a `JdbcProperties` instance
-`Queryable` | Funtional interface for a querying by a String to get a `List`
+`Queryable` | Funtional interface for a querying to get a `List`
 
 ## Usage
 
@@ -162,7 +162,7 @@ Which can then be used to create a JdbcTemplate instance:
     import net.kemitix.spring.common.Queryable;
 
     @Component
-    public class FooQuery implements Queryable<FooItem> {
+    public class FooQuery implements Queryable<String, FooItem> {
 
         @Autowired
         private FooJdbcTemplate jdbcTemplate;
